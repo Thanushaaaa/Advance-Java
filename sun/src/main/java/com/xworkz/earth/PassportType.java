@@ -1,0 +1,6 @@
+package com.xworkz.earth;
+
+public enum PassportType {
+	CHILD_PASSPORT, REGULAR_PASSPORT, TEMPORARY_PASSPORT, REFUGEE_PASSPORT, OFFICIAL_PASSPORT;
+
+}
