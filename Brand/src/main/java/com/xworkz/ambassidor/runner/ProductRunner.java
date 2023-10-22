@@ -41,7 +41,7 @@ public class ProductRunner {
 		BrandDTO brandDTO10 = new BrandDTO(10, "Gucci", "CB023456", addressDTO10, LocalDate.of(2004, 6, 19));
 
 		ProductDTO productDTO1 = new ProductDTO(1, "bag", ProductType.TRAVEL, brandDTO1, 1275, 6);
-		ProductDTO productDTO2 = new ProductDTO(2, "bag", ProductType.BEAUTY, brandDTO2, 1675, 1);
+		ProductDTO productDTO2 = new ProductDTO(2, "clutch", ProductType.BEAUTY, brandDTO2, 1987, 1);
 		ProductDTO productDTO3 = new ProductDTO(3, "Vessel", ProductType.TRAVEL, brandDTO3, 1675, 5);
 		ProductDTO productDTO4 = new ProductDTO(4, "bag", ProductType.ELECTRONICS, brandDTO4, 1675, 4);
 		ProductDTO productDTO5 = new ProductDTO(5, "Bowl", ProductType.TRAVEL, brandDTO5, 1675, 3);
@@ -80,12 +80,18 @@ public class ProductRunner {
 
 		}
 
-		System.out.println("----ProductDTO by BrandDTO");
-
-		List<ProductDTO> products = product.stream().filter(e -> e.getBrand().equals(brandDTO1))
+		System.out.println("------Get BrandDTO by ProductDTO-----");
+		List<BrandDTO> brandDTOs = product.stream().sorted().map(e -> e.getBrand())
+				.filter(v->v.getAddress().equals(v.getAddress()))
 				.collect(Collectors.toList());
-
-		products.forEach(System.out::println);
+		brandDTOs.stream().sorted().forEach(e -> System.out.println(e));
+		
+		System.out.println("-----Get AddressDTO by BrandDTO-----");
+		List<AddressDTO> addressDTOs = product.stream().sorted()
+				.map(v -> v.getBrand().getAddress())
+		.collect(Collectors.toList());
+		
+		addressDTOs.forEach(e -> System.out.println(e));
 
 		System.out.println("----ProductDTO by type----");
 		List<ProductDTO> products4 = product.stream().filter(e -> e.getProductType().equals(ProductType.KITCHEN_APP))
@@ -102,9 +108,16 @@ public class ProductRunner {
 
 		System.out.println("----Get ProductDTO by max price----");
 
-		ProductDTO price = product.stream().filter(pr -> pr.getPrice() <= 2000)
-				.sorted((p1, p2) -> p2.getPrice().compareTo(p1.getPrice())).findFirst().get();
+		Optional<ProductDTO> price = product.stream().sorted((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()))
+				.findFirst();
 		System.out.println(price);
+
+		System.out.println("-----Get all ProductDTO by Type,sort by price in desc-----");
+		List<ProductDTO> productList = product.stream().filter(p -> p.getProductType().equals(ProductType.BEAUTY))
+				.sorted((a1, a2) -> a2.compareTo(a1)).collect(Collectors.toList());
+
+		productList.forEach(System.out::println);
+
 		List<String> names = new ArrayList<String>();
 		names.add("SRK");
 		names.add("Anirudh");
